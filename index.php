@@ -263,7 +263,7 @@
       sessionStorage.setItem('edu_studentId', user.studentId);
       sessionStorage.setItem('edu_email',     user.email);
       sessionStorage.setItem('edu_initials',  user.initials);
-      window.location.href = 'dashboard.php';
+      window.location.href = 'dashboard.html';
     }
 
 
@@ -300,7 +300,7 @@
     });
 
     /* Already logged in  */
-    // if (sessionStorage.getItem('edu_logged_in')) window.location.href = 'dashboard.php';
+    // if (sessionStorage.getItem('edu_logged_in')) window.location.href = 'dashboard.html';
   </script>
 
 </body>

@@ -82,14 +82,14 @@ EduGate is a fully responsive student information portal built as a prototype we
 ## File Structure
 ```
 student-portal/
-index.php            Login & Register page
-dashboard.php        Main dashboard
-courses.php          My Courses
-grades.php           Grades & GPA
-schedule.php         Weekly Schedule
-assignments.php      Assignments
-announcements.php    Announcements
-profile.php          My Profile
+index.html            Login & Register page
+dashboard.html        Main dashboard
+courses.html          My Courses
+grades.html           Grades & GPA
+schedule.html         Weekly Schedule
+assignments.html      Assignments
+announcements.html    Announcements
+profile.html          My Profile
 css/--style.css        Custom stylesheet
  js/--main.js          Shared JavaScript
 ```

@@ -2,7 +2,7 @@
 /* ── Auth Guard ──────────────────────────────────────────────── */
 function requireAuth() {
   if (!sessionStorage.getItem('edu_logged_in')) {
-    window.location.href = 'index.php';
+    window.location.href = 'index.html';
   }
 }
 
@@ -18,7 +18,7 @@ function getCurrentUser() {
 /* ── Logout ──────────────────────────────────────────────────── */
 function logout() {
   sessionStorage.clear();
-  window.location.href = 'index.php';
+  window.location.href = 'index.html';
 }
 
 /* ── Populate User UI ────────────────────────────────────────── */
@@ -39,7 +39,7 @@ function populateUser() {
 
 /* ── Active Nav ──────────────────────────────────────────────── */
 function setActiveNav() {
-  var page = window.location.pathname.split('/').pop() || 'dashboard.php';
+  var page = window.location.pathname.split('/').pop() || 'dashboard.html';
   document.querySelectorAll('.sidebar-nav a').forEach(function(a) {
     a.classList.toggle('active', a.getAttribute('href') === page);
   });

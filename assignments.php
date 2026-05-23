@@ -61,16 +61,16 @@
     </div>
     <div class="sidebar-section mt-2">Main</div>
     <ul class="sidebar-nav">
-      <li><a href="dashboard.php"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-      <li><a href="courses.php"><i class="bi bi-book-fill"></i> My Courses</a></li>
-      <li><a href="grades.php"><i class="bi bi-bar-chart-fill"></i> Grades &amp; GPA</a></li>
-      <li><a href="schedule.php"><i class="bi bi-calendar3"></i> Schedule</a></li>
+      <li><a href="dashboard.html"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+      <li><a href="courses.html"><i class="bi bi-book-fill"></i> My Courses</a></li>
+      <li><a href="grades.html"><i class="bi bi-bar-chart-fill"></i> Grades &amp; GPA</a></li>
+      <li><a href="schedule.html"><i class="bi bi-calendar3"></i> Schedule</a></li>
     </ul>
     <div class="sidebar-section">Academic</div>
     <ul class="sidebar-nav">
-      <li><a href="assignments.php"><i class="bi bi-file-earmark-text"></i> Assignments</a></li>
-      <li><a href="announcements.php"><i class="bi bi-bell"></i> Announcements</a></li>
-      <li><a href="profile.php"><i class="bi bi-person-fill"></i> My Profile</a></li>
+      <li><a href="assignments.html"><i class="bi bi-file-earmark-text"></i> Assignments</a></li>
+      <li><a href="announcements.html"><i class="bi bi-bell"></i> Announcements</a></li>
+      <li><a href="profile.html"><i class="bi bi-person-fill"></i> My Profile</a></li>
     </ul>
     <div class="sidebar-footer">
       <a href="#" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a>
@@ -91,8 +91,8 @@
         <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
           <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i>
         </button>
-        <a href="announcements.php" class="notif-btn"><i class="bi bi-bell-fill"></i><span class="notif-dot"></span></a>
-        <a href="profile.php" class="d-flex align-items-center gap-2" style="text-decoration:none;">
+        <a href="announcements.html" class="notif-btn"><i class="bi bi-bell-fill"></i><span class="notif-dot"></span></a>
+        <a href="profile.html" class="d-flex align-items-center gap-2" style="text-decoration:none;">
   <div class="topbar-avatar user-initials">PY</div>
   <div class="d-none d-sm-block">
     <div class="t-name" id="topbarName">Puteri Yasmin</div>
@@ -378,7 +378,7 @@
     if (typeof logout === "undefined") {
       function logout() {
         sessionStorage.clear();
-        window.location.href = "index.php";
+        window.location.href = "index.html";
       }
     }
   </script>
