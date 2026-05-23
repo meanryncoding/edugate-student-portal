@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=" EduGate - UiTM Student " />
+    <meta name="keywords" content=" EduGate, UiTM, Student, Education, Learning " />
+    <title>EduGate - Login</title>
+
+<!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icon CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="vanta-bg">
+
+
+    <div class="d-flex align-items-center justify-content-center" style="min-height:100vh;padding:1rem;position:relative;z-index:1;">
+    <div class="login-card">
+      <div class="row g-0">
+
+    <!-- ════════════════ LEFT PANEL ══════════════ -->
+     <div class="col-md-5 login-left">
+          <!-- Brand -->
+          <div class="brand">
+            <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+              <div class="brand-name">EduGate</div>
+              <div class="brand-sub">UiTM Student Info System</div>
+            </div>
+          </div>
+
+
+    <!-- Hero -->
+    <div class="hero-text">
+            <h2>Your Academic<br/><span>Future</span><br/>Starts Here.</h2>
+            <p>One portal for all your academic needs — courses, grades, schedule, and more.</p>
+            <ul class="feature-list">
+              <li><i class="bi bi-bar-chart-fill"></i> Live GPA & Grade Tracker</li>
+              <li><i class="bi bi-book-fill"></i> Course Management</li>
+              <li><i class="bi bi-calendar3"></i> Smart Weekly Schedule</li>
+              <li><i class="bi bi-bell-fill"></i> Announcements & Alerts</li>
+              <li><i class="bi bi-moon-stars-fill"></i> Dark Mode Support</li>
+            </ul>
+          </div>
+
+    <!-- Bottom credit -->
+          <div style="font-size:.68rem;color:rgba(255,255,255,.3);position:relative;z-index:1;">
+            &copy; 2026 EduGate &nbsp;·&nbsp; Universiti Teknologi MARA &nbsp;·&nbsp; IMS566
+          </div>
+        </div>
+    
+    <!-- ════════════════ RIGHT PANEL ══════════════ -->
+     <div class="col-md-7 login-right">
+          <h4>Welcome Back! 👋</h4>
+          <p class="sub">Sign in or create an account to continue.</p>
+
+          <!-- Tab switcher -->
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tabLogin"    onclick="switchTab('login')">Sign In</button>
+            <button class="auth-tab"        id="tabRegister" onclick="switchTab('register')">Register</button>
+          </div>
+
+            <!-- ══════════════ Login Form ══════════════ -->
+            <!-- ── LOGIN PANEL ── -->
+          <div class="auth-panel active" id="panelLogin">
+
+            <!-- Error alert -->
+            <div class="auth-alert" id="loginErr">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span id="loginErrMsg">Invalid email or password.</span>
+            </div>
+
+            <!-- Fields -->
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="loginEmail" placeholder="id@student.uitm.edu.my" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <div class="input-group-pw">
+                <input type="password" class="form-control" id="loginPw" placeholder="Enter your password" />
+                <button class="pw-toggle" onclick="togglePw('loginPw','eyeLogin')" type="button">
+                  <i class="bi bi-eye" id="eyeLogin"></i>
+                </button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="form-check mb-0">
+                <input class="form-check-input" type="checkbox" id="rememberMe" />
+                <label class="form-check-label fs-xs text-muted" for="rememberMe" style="font-family:'Roboto',sans-serif;">Remember me</label>
+              </div>
+              <a href="#" class="fs-xs fw-bold text-decoration-none" style="color:var(--primary);">Forgot password?</a>
+            </div>
+            <button class="btn-login" onclick="handleLogin()">
+              <i class="bi bi-box-arrow-in-right"></i> Sign In
+            </button>
+            <p class="text-center mt-3 mb-0 fs-xs" style="color:var(--text-muted);">
+              Don't have an account?
+              <a href="#" onclick="switchTab('register')" style="color:var(--primary);font-weight:700;text-decoration:none;">Create one</a>
+            </p>
+          </div>
+
+            <!-- ══════════════ Register Form ══════════════ -->
+            <!-- REGISTER PANEL -->
+            <div class="auth-panel" id="panelRegister">
+            <div class="auth-success" id="regSuccess">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>Account created! Redirecting to sign in…</span>
+            </div>
+            <div class="auth-alert" id="regErr">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span id="regErrMsg">Please fill all fields correctly.</span>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-12">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="regName" placeholder="e.g. Puteri Yasmin Binti Megat" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Student ID</label>
+                <input type="text" class="form-control" id="regId" placeholder="e.g. 2024123456" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">UiTM Email</label>
+                <input type="email" class="form-control" id="regEmail" placeholder="id@student.uitm.edu.my" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Faculty</label>
+                <select class="form-select" id="regFaculty">
+                  <option value="Faculty of Information Science">Faculty of Information Science</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Password</label>
+                <div class="input-group-pw">
+                  <input type="password" class="form-control" id="regPw" placeholder="Min. 8 chars" />
+                  <button class="pw-toggle" onclick="togglePw('regPw','eyeReg')" type="button">
+                    <i class="bi bi-eye" id="eyeReg"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Confirm Password</label>
+                <div class="input-group-pw">
+                  <input type="password" class="form-control" id="regConfirm" placeholder="Re-enter password" />
+                  <button class="pw-toggle" onclick="togglePw('regConfirm','eyeConf')" type="button">
+                    <i class="bi bi-eye" id="eyeConf"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <button class="btn-login" onclick="handleRegister()">
+                  <i class="bi bi-person-plus-fill"></i> Create Account
+                </button>
+              </div>
+            </div>
+            <p class="text-center mt-3 mb-0 fs-xs" style="color:var(--text-muted);">
+              Already have an account?
+              <a href="#" onclick="switchTab('login')" style="color:var(--primary);font-weight:700;text-decoration:none;">Sign in</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Bootstrap JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- VANTA Background JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+
+<script>
+    VANTA.BIRDS({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth:  200.00,
+      scale:     1.00,
+      scaleMobile: 1.00,
+      backgroundColor: 0x0f1729,
+      color1:    0x4f46e5,
+      color2:    0xf59e0b,
+      birdSize:  1.2,
+      wingSpan:  28,
+      speedLimit: 4,
+      separation: 70,
+      alignment:  50,
+      cohesion:   50,
+      quantity:   3,
+    });
+  </script>
+
+<script>
+    /* Hardcoded accounts */
+    let ACCOUNTS = [
+      { email:'2024123456@student.uitm.edu.my', password:'edugate@2026', name:'Puteri Yasmin Binti Megat', studentId:'2024123456', initials:'PY' },
+      { email:'2024654321@student.uitm.edu.my', password:'edugate@2026', name:'Puteri Yasmin Binti Megat', studentId:'2024654321', initials:'PY' },
+    ];
+
+
+
+    /* Tab switch */
+    function switchTab(t) {
+      document.getElementById('panelLogin').classList.toggle('active',    t==='login');
+      document.getElementById('panelRegister').classList.toggle('active', t==='register');
+      document.getElementById('tabLogin').classList.toggle('active',      t==='login');
+      document.getElementById('tabRegister').classList.toggle('active',   t==='register');
+      ['loginErr','regErr','regSuccess'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('show');
+      });
+    }
+
+    /* Alert helpers */
+    function showErr(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sp = el.querySelector('span');
+      if (sp && msg) sp.textContent = msg;
+      el.classList.add('show');
+    }
+    function hideAlert(id) {
+      document.getElementById(id)?.classList.remove('show');
+    }
+
+    /* Password toggle */
+    function togglePw(inputId, iconId) {
+      const inp  = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      inp.type   = inp.type === 'password' ? 'text' : 'password';
+      icon.className = inp.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+    }
+
+    /* Login  */
+    function handleLogin() {
+      hideAlert('loginErr');
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const pw    = document.getElementById('loginPw').value;
+
+      if (!email || !pw) { showErr('loginErr', 'Please enter your email and password.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('loginErr', 'Please enter a valid email address.'); return; }
+
+      const user = ACCOUNTS.find(a => a.email.toLowerCase() === email && a.password === pw);
+      if (!user) { showErr('loginErr', 'Invalid email or password. Please try again.'); return; }
+
+      sessionStorage.setItem('edu_logged_in', 'true');
+      sessionStorage.setItem('edu_name',      user.name);
+      sessionStorage.setItem('edu_studentId', user.studentId);
+      sessionStorage.setItem('edu_email',     user.email);
+      sessionStorage.setItem('edu_initials',  user.initials);
+      window.location.href = 'dashboard.php';
+    }
+
+
+    /* Register  */
+    function handleRegister() {
+      hideAlert('regErr'); hideAlert('regSuccess');
+      const name    = document.getElementById('regName').value.trim();
+      const id      = document.getElementById('regId').value.trim();
+      const email   = document.getElementById('regEmail').value.trim().toLowerCase();
+      const faculty = document.getElementById('regFaculty').value;
+      const pw      = document.getElementById('regPw').value;
+      const confirm = document.getElementById('regConfirm').value;
+
+      if (!name||!id||!email||!pw||!confirm) { showErr('regErr','Please fill in all fields.'); return; }
+      if (!/^\d{10}$/.test(id))                         { showErr('regErr','Student ID must be 10 digits.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))   { showErr('regErr','Please enter a valid email.'); return; }
+      if (pw.length < 8)                                 { showErr('regErr','Password must be at least 8 characters.'); return; }
+      if (pw !== confirm)                                { showErr('regErr','Passwords do not match.'); return; }
+      if (ACCOUNTS.find(a => a.email === email))         { showErr('regErr','Email already registered.'); return; }
+
+      const initials = name.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      ACCOUNTS.push({ email, password:pw, name, studentId:id, initials });
+
+      document.getElementById('regSuccess').classList.add('show');
+      ['regName','regId','regEmail','regPw','regConfirm'].forEach(fid => { document.getElementById(fid).value=''; });
+      setTimeout(() => switchTab('login'), 2000);
+    }
+
+
+/* Enter key  */
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      document.querySelector('.auth-panel.active')?.id === 'panelLogin' ? handleLogin() : handleRegister();
+    });
+
+    /* Already logged in  */
+    // if (sessionStorage.getItem('edu_logged_in')) window.location.href = 'dashboard.php';
+  </script>
+
+</body>
+</html>

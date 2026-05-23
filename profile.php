@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EduGate – My student profile and personal information." />
+  <meta name="author" content="IMS566 Individual Project" />
+  <title>My Profile – EduGate</title>
+
+<!-- Dark Mode -->
+  <script>
+    var htmlElement = document.documentElement;
+    var savedTheme = localStorage.getItem("theme") || "light";
+    htmlElement.setAttribute("data-bs-theme", savedTheme);
+ 
+    function updateIcon(theme) {
+      var icon = document.getElementById("darkModeIcon");
+      if (!icon) return;
+      icon.className = theme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
+    }
+    updateIcon(savedTheme);
+ 
+    document.addEventListener("DOMContentLoaded", function() {
+      var btn = document.getElementById("darkModeToggle");
+      if (btn) {
+        btn.addEventListener("click", function() {
+          var current = htmlElement.getAttribute("data-bs-theme");
+          var next = current === "light" ? "dark" : "light";
+          htmlElement.setAttribute("data-bs-theme", next);
+          localStorage.setItem("theme", next);
+          updateIcon(next);
+        });
+      }
+    });
+    </script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icon CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+  <!-- Google Font API -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* Profile hero */
+    .profile-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: var(--radius);
+      padding: 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 50px solid rgba(255,255,255,.08);
+    }
+    .profile-hero::after {
+      content: '';
+      position: absolute; bottom: -40px; left: 30%;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 30px solid rgba(255,255,255,.05);
+    }
+
+    .profile-avatar-lg {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 900; color: white;
+      border: 3px solid rgba(255,255,255,.4);
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+    }
+    .profile-hero-name { font-size: 1.4rem; font-weight: 900; margin-bottom: .2rem; }
+    .profile-hero-sub  { font-size: .85rem; opacity: .75; }
+
+    /* Info rows */
+    .info-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .85rem 0; border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .info-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; flex-shrink: 0;
+    }
+    .info-row .info-label { font-size: .72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .4px; }
+    .info-row .info-val   { font-size: .9rem; font-weight: 600; color: var(--text); margin-top: 1px; }
+
+    /* Edit input */
+    .edit-input {
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: .45rem .85rem; font-family: 'Roboto', sans-serif;
+      font-size: .88rem; background: var(--input-bg); color: var(--text);
+      width: 100%; outline: none; transition: var(--transition);
+      display: none;
+    }
+    .edit-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+
+    /* Skills bar */
+    .skill-row { margin-bottom: 1rem; }
+    .skill-name { font-size: .82rem; font-weight: 700; margin-bottom: .3rem; display: flex; justify-content: space-between; }
+
+    /* Achievement badge */
+    .ach-badge {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem;
+      display: flex; align-items: center; gap: .85rem;
+      box-shadow: var(--shadow); transition: var(--transition);
+    }
+    .ach-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .ach-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .ach-title { font-size: .85rem; font-weight: 700; color: var(--text); }
+    .ach-sub   { font-size: .74rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Save toast banner */
+    .save-banner {
+      background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.2);
+      border-radius: 10px; padding: .7rem 1rem;
+      color: var(--success); font-size: .85rem; font-weight: 600;
+      display: none; align-items: center; gap: 8px; margin-bottom: 1rem;
+    }
+    .save-banner.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ════════════════ SIDEBAR ══════════════ -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div class="s-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div><div class="s-name">EduGate</div><div class="s-sub">Student Info System</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="s-avatar user-initials">PY</div>
+      <div><div class="s-uname" id="sidebarName">Puteri Yasmin</div><div class="s-uid" id="sidebarId">2024123456</div></div>
+    </div>
+    <div class="sidebar-section mt-2">Main</div>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.php"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+      <li><a href="courses.php"><i class="bi bi-book-fill"></i> My Courses</a></li>
+      <li><a href="grades.php"><i class="bi bi-bar-chart-fill"></i> Grades &amp; GPA</a></li>
+      <li><a href="schedule.php"><i class="bi bi-calendar3"></i> Schedule</a></li>
+    </ul>
+    <div class="sidebar-section">Academic</div>
+    <ul class="sidebar-nav">
+      <li><a href="assignments.php"><i class="bi bi-file-earmark-text"></i> Assignments</a></li>
+      <li><a href="announcements.php"><i class="bi bi-bell"></i> Announcements</a></li>
+      <li><a href="profile.php"><i class="bi bi-person-fill"></i> My Profile</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ MAIN CONTENT ═════════════════════-->
+  <div id="content">
+    <div class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="hamburger-btn" id="hamburgerBtn"><i class="bi bi-list"></i></button>
+        <div>
+          <div class="page-title">My Profile</div>
+          <div class="page-sub">Personal information &amp; academic record</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+          <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i>
+        </button>
+        <a href="announcements.php" class="notif-btn"><i class="bi bi-bell-fill"></i><span class="notif-dot"></span></a>
+        <a href="profile.php" class="d-flex align-items-center gap-2" style="text-decoration:none;">
+  <div class="topbar-avatar user-initials">PY</div>
+  <div class="d-none d-sm-block">
+    <div class="t-name" id="topbarName">Puteri Yasmin</div>
+    <div class="t-role">Student</div>
+  </div>
+</a>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div class="save-banner" id="saveBanner">
+        <i class="bi bi-check-circle-fill"></i> Profile updated successfully!
+      </div>
+
+      <!-- Profile Hero -->
+      <div class="profile-hero mb-4">
+        <div class="d-flex align-items-center gap-3 flex-wrap" style="position:relative;z-index:1;">
+          <div class="profile-avatar-lg user-initials">PY</div>
+          <div class="flex-grow-1">
+            <div class="profile-hero-name" id="heroName">Puteri Yasmin</div>
+            <div class="profile-hero-sub" id="heroId">Student ID: 2024123456</div>
+            <div class="profile-hero-sub mt-1" id="heroFaculty">Faculty of Information Science</div>
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              <span style="background:rgba(255,255,255,.15);color:white;padding:.25rem .7rem;border-radius:20px;font-size:.74rem;font-weight:700;">
+                <i class="bi bi-mortarboard me-1"></i>Semester 3 · 2025/2026
+              </span>
+              <span style="background:rgba(16,185,129,.3);color:white;padding:.25rem .7rem;border-radius:20px;font-size:.74rem;font-weight:700;">
+                <i class="bi bi-trophy me-1"></i>GPA 3.71 · Dean's List
+              </span>
+            </div>
+          </div>
+          <button class="sem-btn" id="editToggleBtn" onclick="toggleEdit()"
+            style="background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.3);">
+            <i class="bi bi-pencil-fill me-1"></i> Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <div class="row g-3">
+
+        <!-- Personal Info -->
+        <div class="col-12 col-lg-6">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-person-fill me-2 text-primary-c"></i>Personal Information</h6>
+            </div>
+            <div class="card-box-body">
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(79,70,229,.1);"><i class="bi bi-person-fill text-primary-c"></i></div>
+                <div class="flex-grow-1">
+                  <div class="info-label">Full Name</div>
+                  <div class="info-val" id="valName">Puteri Yasmin</div>
+                  <input class="edit-input mt-1" id="inpName" type="text" value="Puteri Yasmin" />
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(16,185,129,.1);"><i class="bi bi-card-text" style="color:var(--success);"></i></div>
+                <div class="flex-grow-1">
+                  <div class="info-label">Student ID</div>
+                  <div class="info-val" id="valId">2024123456</div>
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(6,182,212,.1);"><i class="bi bi-envelope-fill" style="color:var(--info);"></i></div>
+                <div class="flex-grow-1">
+                  <div class="info-label">Email Address</div>
+                  <div class="info-val" id="valEmail">2024123456@student.uitm.edu.my</div>
+                  <input class="edit-input mt-1" id="inpEmail" type="email" value="2024123456@student.uitm.edu.my" />
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(245,158,11,.1);"><i class="bi bi-telephone-fill" style="color:var(--accent);"></i></div>
+                <div class="flex-grow-1">
+                  <div class="info-label">Phone Number</div>
+                    <div class="info-val" id="valPhone">+60 12-345 6789</div>
+                    <div class="edit-input mt-1" id="inpPhoneWrap" style="display:none;padding:0;border:none;background:none;">
+                     <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:var(--input-bg);">
+                    <span style="padding:.45rem .75rem;background:var(--bg);color:var(--text-muted);font-size:.88rem;border-right:1.5px solid var(--border);font-family:'Roboto',sans-serif;flex-shrink:0;">+60</span>
+                    <input id="inpPhone" type="text" placeholder="11-234 5678"
+                    style="border:none;outline:none;padding:.45rem .75rem;font-family:'Roboto',sans-serif;font-size:.88rem;background:var(--input-bg);color:var(--text);width:100%;" />
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(236,72,153,.1);"><i class="bi bi-geo-alt-fill" style="color:var(--pink);"></i></div>
+                <div class="flex-grow-1">
+                  <div class="info-label">Hometown</div>
+                  <div class="info-val" id="valCity">Ampang, Selangor</div>
+                  <input class="edit-input mt-1" id="inpCity" type="text" value="Ampang, Selangor" />
+                </div>
+              </div>
+              <div id="editActions" style="display:none;" class="d-flex gap-2 mt-3">
+                <button class="sem-btn active" onclick="saveProfile()" style="flex:1;">
+                  <i class="bi bi-check-circle-fill me-1"></i> Save Changes
+                </button>
+                <button class="sem-btn" onclick="cancelEdit()" style="flex:1;">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Info -->
+        <div class="col-12 col-lg-6">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-mortarboard-fill me-2" style="color:var(--accent);"></i>Academic Information</h6>
+            </div>
+            <div class="card-box-body">
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(79,70,229,.1);"><i class="bi bi-building-fill text-primary-c"></i></div>
+                <div>
+                  <div class="info-label">Faculty</div>
+                  <div class="info-val">Faculty of Information Science</div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(16,185,129,.1);"><i class="bi bi-book-fill" style="color:var(--success);"></i></div>
+                <div>
+                  <div class="info-label">Programme</div>
+                  <div class="info-val">Bachelor of Information Systems Management (Hons.)</div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(6,182,212,.1);"><i class="bi bi-hash" style="color:var(--info);"></i></div>
+                <div>
+                  <div class="info-label">Current Semester</div>
+                  <div class="info-val">Semester 3 &nbsp;·&nbsp; Session 2025/2026</div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(245,158,11,.1);"><i class="bi bi-trophy-fill" style="color:var(--accent);"></i></div>
+                <div>
+                  <div class="info-label">Cumulative GPA</div>
+                  <div class="info-val" style="color:var(--primary);font-size:1.1rem;font-weight:900;">3.71 <span style="font-size:.8rem;font-weight:500;color:var(--text-muted);">/ 4.00</span></div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(79,70,229,.1);"><i class="bi bi-award-fill text-primary-c"></i></div>
+                <div>
+                  <div class="info-label">Credit Hours Completed</div>
+                  <div class="info-val">63 / 120 hrs</div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-icon" style="background:rgba(16,185,129,.1);"><i class="bi bi-patch-check-fill" style="color:var(--success);"></i></div>
+                <div>
+                  <div class="info-label">Academic Status</div>
+                  <div><span class="pill pill-success">Active &nbsp;·&nbsp; Dean's List Eligible</span></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Skills / Progress ── -->
+        <div class="col-12 col-lg-6">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-lightning-charge-fill me-2" style="color:var(--accent);"></i>Skills &amp; Competencies</h6>
+            </div>
+            <div class="card-box-body">
+              <div class="skill-row">
+                <div class="skill-name"><span>Web Development (HTML/CSS/JS)</span><span class="text-primary-c">88%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:88%;background:var(--primary);"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name"><span>Database Management (SQL)</span><span style="color:var(--success);">75%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:75%;background:var(--success);"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name"><span>Software Engineering &amp; UML</span><span style="color:var(--info);">80%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:80%;background:var(--info);"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name"><span>Project Management</span><span style="color:var(--pink);">90%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:90%;background:var(--pink);"></div></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-name"><span>Engineering Mathematics</span><span style="color:var(--accent);">60%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:60%;background:var(--accent);"></div></div>
+              </div>
+              <div class="skill-row" style="margin-bottom:0;">
+                <div class="skill-name"><span>Technical Writing &amp; Documentation</span><span style="color:var(--success);">82%</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:82%;background:var(--success);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Achievements ── -->
+        <div class="col-12 col-lg-6">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-star-fill me-2" style="color:var(--accent);"></i>Achievements &amp; Awards</h6>
+            </div>
+            <div class="card-box-body d-flex flex-column gap-3">
+
+              <div class="ach-badge">
+                <div class="ach-icon" style="background:rgba(245,158,11,.12);">🏆</div>
+                <div>
+                  <div class="ach-title">Dean's List – Semester 1</div>
+                  <div class="ach-sub">GPA 3.72 &nbsp;·&nbsp; Session 2023/2024</div>
+                </div>
+                <span class="pill pill-success ms-auto fs-xs">Achieved</span>
+              </div>
+
+              <div class="ach-badge">
+                <div class="ach-icon" style="background:rgba(79,70,229,.12);">🎖️</div>
+                <div>
+                  <div class="ach-title">Best Student – Web Development Module</div>
+                  <div class="ach-sub">IMS566 &nbsp;·&nbsp; Semester 3 2024/2025</div>
+                </div>
+                <span class="pill pill-accent ms-auto fs-xs">Pending</span>
+              </div>
+
+              <div class="ach-badge">
+                <div class="ach-icon" style="background:rgba(16,185,129,.12);">📜</div>
+                <div>
+                  <div class="ach-title">Hackathon Participant – UiTM TechFest</div>
+                  <div class="ach-sub">October 2024 &nbsp;·&nbsp; Team of 4</div>
+                </div>
+                <span class="pill pill-success ms-auto fs-xs">Achieved</span>
+              </div>
+
+              <div class="ach-badge">
+                <div class="ach-icon" style="background:rgba(6,182,212,.12);">🌟</div>
+                <div>
+                  <div class="ach-title">Perfect Attendance – Semester 1</div>
+                  <div class="ach-sub">100% attendance all subjects &nbsp;·&nbsp; Sem 1</div>
+                </div>
+                <span class="pill pill-success ms-auto fs-xs">Achieved</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="site-footer">
+      <div>&copy; 2026 EduGate &nbsp;·&nbsp; Universiti Teknologi MARA &nbsp;·&nbsp; IMS566 Individual Project</div>
+      <div class="footer-links"><a href="#">Help</a><a href="#">Privacy</a><a href="#">Contact IT</a></div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    let isEditing = false;
+
+    function toggleEdit() {
+      isEditing = !isEditing;
+      document.querySelectorAll('.edit-input').forEach(inp => inp.style.display = isEditing ? 'block' : 'none');
+document.getElementById('inpPhoneWrap').style.display = isEditing ? 'block' : 'none';
+      document.querySelectorAll('.info-val[id]').forEach(v => v.style.display = isEditing ? 'none' : 'block');
+      document.getElementById('editActions').style.display = isEditing ? 'flex' : 'none';
+      document.getElementById('editToggleBtn').innerHTML = isEditing
+        ? '<i class="bi bi-x-circle-fill me-1"></i> Cancel Edit'
+        : '<i class="bi bi-pencil-fill me-1"></i> Edit Profile';
+    }
+
+    function saveProfile() {
+    var rawName = document.getElementById('inpName').value;
+    var capName = rawName.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    var words    = capName.trim().split(' ');
+    var initials = words.length >= 2 
+    ? (words[0][0] + words[1][0]).toUpperCase() 
+    : words[0].slice(0,2).toUpperCase();
+
+  sessionStorage.setItem('edu_initials', initials);
+  document.querySelectorAll('.user-initials').forEach(function(el) {
+  el.textContent = initials;
+});
+
+var sn = document.getElementById('sidebarName');
+if (sn) sn.textContent = capName;
+
+var tn = document.getElementById('topbarName');
+if (tn) tn.textContent = capName.split(' ')[0];
+
+    document.getElementById('valName').textContent  = capName;
+    document.getElementById('heroName').textContent = capName;
+    document.getElementById('inpName').value        = capName;
+    sessionStorage.setItem('edu_name', capName);
+      document.getElementById('valEmail').textContent = document.getElementById('inpEmail').value;
+      var phoneNum = document.getElementById('inpPhone').value.trim();
+      document.getElementById('valPhone').textContent = '+60 ' + phoneNum;
+      document.getElementById('valCity').textContent  = document.getElementById('inpCity').value;
+      isEditing = true; toggleEdit();
+      const banner = document.getElementById('saveBanner');
+      banner.classList.add('show');
+      setTimeout(() => banner.classList.remove('show'), 3500);
+    }
+
+    function cancelEdit() {
+      document.getElementById('inpName').value  = document.getElementById('valName').textContent;
+      document.getElementById('inpEmail').value = document.getElementById('valEmail').textContent;
+      document.getElementById('inpPhone').value = document.getElementById('valPhone').textContent.replace('+60 ', '');
+      document.getElementById('inpCity').value  = document.getElementById('valCity').textContent;
+      isEditing = true; toggleEdit();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+  var saved = sessionStorage.getItem('edu_name');
+  if (saved) {
+    var capitalized = saved.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    document.getElementById('valName').textContent  = capitalized;
+    document.getElementById('heroName').textContent = capitalized;
+    document.getElementById('inpName').value        = capitalized;
+  }
+});
+  </script>
+
+
+<!-- logout function -->
+<script>
+    // Backup logout function
+    if (typeof logout === "undefined") {
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = "index.php";
+      }
+    }
+  </script>
+
+</body>
+</html>

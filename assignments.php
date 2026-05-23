@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EduGate – View and track all your assignments and submission deadlines." />
+  <meta name="author" content="IMS566 Individual Project" />
+  <title>Assignments – EduGate</title>
+
+<!-- Dark Mode -->
+  <script>
+    var htmlElement = document.documentElement;
+    var savedTheme = localStorage.getItem("theme") || "light";
+    htmlElement.setAttribute("data-bs-theme", savedTheme);
+ 
+    function updateIcon(theme) {
+      var icon = document.getElementById("darkModeIcon");
+      if (!icon) return;
+      icon.className = theme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
+    }
+    updateIcon(savedTheme);
+ 
+    document.addEventListener("DOMContentLoaded", function() {
+      var btn = document.getElementById("darkModeToggle");
+      if (btn) {
+        btn.addEventListener("click", function() {
+          var current = htmlElement.getAttribute("data-bs-theme");
+          var next = current === "light" ? "dark" : "light";
+          htmlElement.setAttribute("data-bs-theme", next);
+          localStorage.setItem("theme", next);
+          updateIcon(next);
+        });
+      }
+    });
+    </script> 
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icon CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+  <!-- Google Font API -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ════════════════ SIDEBAR ══════════════ -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div class="s-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div><div class="s-name">EduGate</div><div class="s-sub">Student Info System</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="s-avatar user-initials">PY</div>
+      <div><div class="s-uname" id="sidebarName">Puteri Yasmin</div><div class="s-uid" id="sidebarId">2024123456</div></div>
+    </div>
+    <div class="sidebar-section mt-2">Main</div>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.php"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+      <li><a href="courses.php"><i class="bi bi-book-fill"></i> My Courses</a></li>
+      <li><a href="grades.php"><i class="bi bi-bar-chart-fill"></i> Grades &amp; GPA</a></li>
+      <li><a href="schedule.php"><i class="bi bi-calendar3"></i> Schedule</a></li>
+    </ul>
+    <div class="sidebar-section">Academic</div>
+    <ul class="sidebar-nav">
+      <li><a href="assignments.php"><i class="bi bi-file-earmark-text"></i> Assignments</a></li>
+      <li><a href="announcements.php"><i class="bi bi-bell"></i> Announcements</a></li>
+      <li><a href="profile.php"><i class="bi bi-person-fill"></i> My Profile</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════ MAIN CONTENT ═════════════════════-->
+  <div id="content">
+    <div class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="hamburger-btn" id="hamburgerBtn"><i class="bi bi-list"></i></button>
+        <div>
+          <div class="page-title">Assignments</div>
+          <div class="page-sub">Track your tasks and submission deadlines</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+          <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i>
+        </button>
+        <a href="announcements.php" class="notif-btn"><i class="bi bi-bell-fill"></i><span class="notif-dot"></span></a>
+        <a href="profile.php" class="d-flex align-items-center gap-2" style="text-decoration:none;">
+  <div class="topbar-avatar user-initials">PY</div>
+  <div class="d-none d-sm-block">
+    <div class="t-name" id="topbarName">Puteri Yasmin</div>
+    <div class="t-role">Student</div>
+  </div>
+</a>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Summary cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="stat-card s-danger" style="--accent-color:var(--danger);">
+            <div class="stat-card" style="border:none;padding:0;box-shadow:none;">
+            </div>
+            <div class="stat-icon" style="background:rgba(239,68,68,.1);">
+              <i class="bi bi-exclamation-circle-fill" style="color:var(--danger);"></i>
+            </div>
+            <div class="stat-value" style="color:var(--danger);" id="countPending">3</div>
+            <div class="stat-label">Pending</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card s-success">
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);">
+              <i class="bi bi-check-circle-fill" style="color:var(--success);"></i>
+            </div>
+            <div class="stat-value" style="color:var(--success);" id="countDone">4</div>
+            <div class="stat-label">Submitted</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card s-accent">
+            <div class="stat-icon" style="background:rgba(245,158,11,.1);">
+              <i class="bi bi-clock-fill" style="color:var(--accent);"></i>
+            </div>
+            <div class="stat-value" style="color:var(--accent);" id="countLate">1</div>
+            <div class="stat-label">Overdue</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card s-primary">
+            <div class="stat-icon" style="background:rgba(79,70,229,.1);">
+              <i class="bi bi-clipboard2-fill text-primary-c"></i>
+            </div>
+            <div class="stat-value text-primary-c" id="countTotal">8</div>
+            <div class="stat-label">Total Assignments</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="card-box mb-4">
+        <div class="filter-bar">
+          <div class="search-wrap">
+            <i class="bi bi-search"></i>
+            <input type="text" class="search-input" id="asgSearch" placeholder="Search assignments…" oninput="filterAsg()" />
+          </div>
+          <select class="filter-select" id="asgStatus" onchange="filterAsg()">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Submitted">Submitted</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+          <select class="filter-select" id="asgCourse" onchange="filterAsg()">
+            <option value="">All Courses</option>
+            <option value="IMS511">IMS511</option>
+            <option value="IMS555">IMS555</option>
+            <option value="LCC402">LCC402</option>
+            <option value="TMC451">TMC451</option>
+            <option value="IMS560">IMS560</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Assignment</th>
+                <th>Course</th>
+                <th>Type</th>
+                <th>Due Date</th>
+                <th>Weight</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="asgTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Empty state -->
+        <div id="asgEmpty" style="display:none;" class="text-center py-5">
+          <div style="font-size:3rem;">📋</div>
+          <h6 class="mt-2 text-muted-c">No assignments found</h6>
+          <p class="fs-xs text-muted-c">Try adjusting your filter.</p>
+        </div>
+      </div>
+
+     <!-- Chart + Due Soon -->
+      <div class="row g-3">
+        <div class="col-12 col-lg-7">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-bar-chart-fill me-2 text-primary-c"></i>Completion by Course</h6>
+              <span class="pill pill-primary fs-xs">Semester 3</span>
+            </div>
+            <div class="card-box-body">
+              <div style="position:relative;height:240px;">
+                <canvas id="asgChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-5">
+          <div class="card-box h-100">
+            <div class="card-box-header">
+              <h6><i class="bi bi-fire me-2" style="color:var(--danger);"></i>Due Soon</h6>
+              <span class="pill pill-danger fs-xs">Next 7 Days</span>
+            </div>
+            <div class="card-box-body" id="dueSoonPanel"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- footer -->
+    <footer class="site-footer">
+      <div>&copy; 2026 EduGate &nbsp;·&nbsp; Universiti Teknologi MARA &nbsp;·&nbsp; IMS566 Individual Project</div>
+      <div class="footer-links"><a href="#">Help</a><a href="#">Privacy</a><a href="#">Contact IT</a></div>
+    </footer>
+  </div>
+
+  <!-- Assignment Detail Modal -->
+  <div class="modal fade" id="asgModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:14px;border:none;font-family:'Roboto',sans-serif;background:var(--card-bg);color:var(--text);">
+        <div class="modal-header border-0" style="background:var(--primary);border-radius:14px 14px 0 0;">
+          <h6 class="modal-title text-white fw-bold" id="mAsgTitle">Assignment</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-3 fs-sm">
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Course</div><div id="mAsgCourse">—</div></div>
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Type</div><div id="mAsgType">—</div></div>
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Due Date</div><div id="mAsgDue">—</div></div>
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Weight</div><div id="mAsgWeight">—</div></div>
+            <div class="col-12"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Description</div><div id="mAsgDesc">—</div></div>
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Status</div><div id="mAsgStatus">—</div></div>
+            <div class="col-6"><div class="fs-xs text-muted-c fw-bold text-uppercase mb-1">Marks</div><div id="mAsgMarks">—</div></div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button class="sem-btn" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    const ASSIGNMENTS = [
+      /* Pending */
+      { id:1, title:'Individual Project – EduGate Web Portal',     course:'IMS566', type:'Project',     due:'11 May 2025', weight:'20%', status:'Pending',   marks:'—',    desc:'Develop a full web application prototype using Bootstrap 5 and deploy via GitHub Pages.' },
+      { id:2, title:'Lab Assignment 2 – Algorithm Implementation', course:'IMS511', type:'Lab Report',  due:'8 May 2025',  weight:'15%', status:'Pending',   marks:'—',    desc:'Implement sorting and searching algorithms using Python and analyse time complexity.' },
+      { id:3, title:'Decision Case Study – Group Report',          course:'IMS555', type:'Report',      due:'6 May 2025',  weight:'20%', status:'Pending',   marks:'—',    desc:'Analyse a real-world decision problem using decision tree and expected value methods.' },
+      /* Submitted */
+      { id:4, title:'Database Design Assignment',                  course:'IMS560', type:'Assignment',  due:'20 Apr 2025', weight:'15%', status:'Submitted', marks:'44/50', desc:'Design and normalise a database schema for a library management system.' },
+      { id:5, title:'Oral Presentation 1',                        course:'LCC402', type:'Presentation', due:'15 Apr 2025', weight:'20%', status:'Submitted', marks:'42/50', desc:'Individual oral presentation on a current issue in information management.' },
+      { id:6, title:'Mandarin Written Test 1',                    course:'TMC451', type:'Quiz',         due:'10 Apr 2025', weight:'10%', status:'Submitted', marks:'38/50', desc:'Written test covering vocabulary, grammar and reading comprehension from Units 1–4.' },
+      { id:7, title:'Lab Assignment 1 – Python Basics',           course:'IMS511', type:'Lab Report',  due:'5 Apr 2025',  weight:'10%', status:'Submitted', marks:'46/50', desc:'Introduction to Python programming — variables, loops, functions and file handling.' },
+      /* Overdue */
+      { id:8, title:'IMS560 – ER Diagram Task',                   course:'IMS560', type:'Assignment',  due:'1 Apr 2025',  weight:'5%',  status:'Overdue',   marks:'0/50',  desc:'Draw a complete ER diagram for a hospital management system.' },
+    ];
+
+    let filtered = [...ASSIGNMENTS];
+
+    /*  Render table  */
+    function renderTable(data) {
+      const sc = { Pending:'pill-accent', Submitted:'pill-success', Overdue:'pill-danger' };
+      document.getElementById('asgTableBody').innerHTML = data.map((a,i) => `
+        <tr>
+          <td class="text-muted-c fs-xs">${i+1}</td>
+          <td>
+            <div class="fw-bold fs-sm">${a.title}</div>
+            <div class="fs-xs text-muted-c">${a.desc.slice(0,55)}…</div>
+          </td>
+          <td><span class="pill pill-primary">${a.course}</span></td>
+          <td class="fs-sm">${a.type}</td>
+          <td class="fs-sm fw-bold">${a.due}</td>
+          <td class="fs-sm fw-bold text-primary-c">${a.weight}</td>
+          <td><span class="pill ${sc[a.status]}">${a.status}</span></td>
+          <td>
+            <button class="sem-btn active" style="font-size:.72rem;padding:.28rem .65rem;" onclick="openModal(${a.id})">
+              <i class="bi bi-eye me-1"></i>View
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    /*  Filter  */
+    function filterAsg() {
+      const q  = document.getElementById('asgSearch').value.toLowerCase();
+      const st = document.getElementById('asgStatus').value;
+      const co = document.getElementById('asgCourse').value;
+      filtered = ASSIGNMENTS.filter(a =>
+        (!q  || a.title.toLowerCase().includes(q) || a.course.toLowerCase().includes(q)) &&
+        (!st || a.status === st) &&
+        (!co || a.course === co)
+      );
+      renderTable(filtered);
+      document.getElementById('asgEmpty').style.display = filtered.length ? 'none' : 'block';
+    }
+
+    /*  Modal  */
+    function openModal(id) {
+      const a = ASSIGNMENTS.find(x => x.id === id); if (!a) return;
+      const sc = { Pending:'pill-accent', Submitted:'pill-success', Overdue:'pill-danger' };
+      document.getElementById('mAsgTitle').textContent  = a.title;
+      document.getElementById('mAsgCourse').textContent = a.course;
+      document.getElementById('mAsgType').textContent   = a.type;
+      document.getElementById('mAsgDue').textContent    = a.due;
+      document.getElementById('mAsgWeight').textContent = a.weight;
+      document.getElementById('mAsgDesc').textContent   = a.desc;
+      document.getElementById('mAsgMarks').textContent  = a.marks;
+      document.getElementById('mAsgStatus').innerHTML   = `<span class="pill ${sc[a.status]}">${a.status}</span>`;
+      new bootstrap.Modal(document.getElementById('asgModal')).show();
+    }
+
+    /*  Due Soon panel  */
+    const colors = { IMS511:'#4f46e5', IMS555:'#10b981', LCC402:'#06b6d4', TMC451:'#f59e0b', IMS560:'#ec4899', IMS566:'#4f46e5' };
+    document.getElementById('dueSoonPanel').innerHTML = ASSIGNMENTS
+      .filter(a => a.status === 'Pending')
+      .map(a => `
+        <div class="event-row mb-1">
+          <div class="event-dot" style="background:${colors[a.course]||'#4f46e5'};"></div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-sm fw-bold">${a.course} – ${a.type}</span>
+              <span class="pill pill-danger fs-xs">${a.due}</span>
+            </div>
+            <div class="fs-xs text-muted-c mt-1">${a.title}</div>
+          </div>
+        </div>`).join('');
+
+    /*  Bar Chart – Sem 3 courses  */
+    Chart.defaults.font.family = "'Roboto', sans-serif";
+    Chart.defaults.color = '#64748b';
+    new Chart(document.getElementById('asgChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['IMS511','IMS555','LCC402','TMC451','IMS560'],
+        datasets: [
+          { label:'Submitted', data:[1,0,1,1,1], backgroundColor:'rgba(16,185,129,.8)', borderRadius:6, borderSkipped:false },
+          { label:'Pending',   data:[1,1,0,0,0], backgroundColor:'rgba(245,158,11,.8)', borderRadius:6, borderSkipped:false },
+          { label:'Overdue',   data:[0,0,0,0,1], backgroundColor:'rgba(239,68,68,.8)',  borderRadius:6, borderSkipped:false },
+        ],
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'top', labels:{ boxWidth:12, padding:14, font:{size:11} } } },
+        scales:{
+          x:{ grid:{display:false}, stacked:true },
+          y:{ beginAtZero:true, stacked:true, ticks:{ stepSize:1 }, grid:{color:'rgba(0,0,0,.05)'} },
+        },
+      },
+    });
+
+    renderTable(ASSIGNMENTS);
+  </script>
+
+<!-- logout function -->
+<script>
+    // Backup logout function
+    if (typeof logout === "undefined") {
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = "index.php";
+      }
+    }
+  </script>
+
+</body>
+</html>
