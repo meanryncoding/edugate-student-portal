@@ -1,9 +1,7 @@
 # EduGate – Student Information System
 
-Universiti Teknologi MARA (UiTM)
-IMS566 Advanced Web Design Development and Content Management 
-Individual Assignment
-
+- Live Site: https://meanryncoding.github.io/edugate-student-portal/ </br>
+- Repository: https://github.com/meanryncoding/edugate-student-portal
 
 # Project Description
 
