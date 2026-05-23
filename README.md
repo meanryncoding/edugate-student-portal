@@ -74,7 +74,7 @@ EduGate is a fully responsive student information portal built as a prototype we
 ---
 
 ## Login Credentials
-   email: 2024123456@student.uitm.edu.my 
+   email: 2024123456@student.uitm.edu.my</br> 
    password: edugate@2026
 
 > You can register a new account via the Register tab.
@@ -93,7 +93,7 @@ assignments.php      Assignments
 announcements.php    Announcements
 profile.php          My Profile
 css/--style.css        Custom stylesheet
- js/--main.js         Shared JavaScript
+ js/--main.js          Shared JavaScript
 ```
 
 ## Frameworks & Libraries
@@ -105,11 +105,11 @@ css/--style.css        Custom stylesheet
 | Chart.js | 4.4.4 | Data visualisation (charts) |
 | Vanta.js (Birds) | Latest | Animated login background |
 | Three.js | r134 | Required by Vanta.js |
-| Google Fonts (Roboto) | -| Typography |
+| Google Fonts (Roboto) |-| Typography |
 
 ## Developer
 
-Name: Puteri Nuryasmin Farhana binti Megat Mohd Zulkarnain
-Student ID: 2024402302
-Course: IMS566 – Advanced Web Design Development and Content Management
+Name: Puteri Nuryasmin Farhana binti Megat Mohd Zulkarnain </br>
+Student ID: 2024402302</br>
+Course: IMS566 – Advanced Web Design Development and Content Management</br>
 Faculty: Faculty of Information Science
