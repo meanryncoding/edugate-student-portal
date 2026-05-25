@@ -46,7 +46,6 @@ function setActiveNav() {
 }
 
 /* ── Sidebar Toggle ──────────────────────────────────────────── */
-/* ── Sidebar Toggle ──────────────────────────────────────────── */
 function initSidebar() {
   var sidebar = document.getElementById('sidebar');
   var content = document.getElementById('content');
@@ -54,8 +53,12 @@ function initSidebar() {
   if (!sidebar || !btn) return;
 
   btn.addEventListener('click', function() {
-    sidebar.classList.toggle('collapsed');
-    content.classList.toggle('expanded');
+    if (window.innerWidth <= 768) {
+      sidebar.classList.toggle('open');
+    } else {
+      sidebar.classList.toggle('collapsed');
+      content.classList.toggle('expanded');
+    }
   });
 }
 
